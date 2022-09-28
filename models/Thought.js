@@ -7,31 +7,31 @@ const thoughtSchema = new Schema({
         type: String,
         required: true,
         maxlength: 280,
-        minlength: 1
+        minlength: 1,
     },
     createdAt: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => moment(timestamp).format('dddd Do MMM, YYYY [at] hh:mm a')
+        get: (timestamp) => moment(timestamp).format('dddd Do MMM, YYYY [at] hh:mm a'),
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     reactions: [reactionSchema]
 },
 {
     toJSON: {
         virtuals: true,
-        getters: true
+        getters: true,
     },
-    id: false
+    id: false,
 }
 );
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length
-})
+});
 
 const Thought = model('Thought', thoughtSchema)
 
