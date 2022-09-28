@@ -90,7 +90,7 @@ const userController = {
   addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
-      { $push: { friends: params.friendId }},
+      { $addToSet: { friends: params.friendId }},
       { new: true, runValidators: true }
     )
     .populate({
@@ -115,14 +115,9 @@ const userController = {
   deleteFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
-      { $push: { friends: params.friendId }},
+      { $pull: { friends: params.friendId }},
       { new: true}
     )
-    .populate({
-      path: 'friends',
-      select: ('-__v')
-    })
-    .select('-__v')
     .then(dbUserData => {
       if(!dbUserData) {
         res.status(404).json({message: 'User ID not found'});
